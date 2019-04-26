@@ -5,8 +5,6 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
 from .models import Goods
-from django_filters.rest_framework import DjangoFilterBackend
-from .filters import GoodsFilter
 
 class GoodsPagination(PageNumberPagination):
     page_size = 12
@@ -21,10 +19,6 @@ class GoodsViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Goods.objects.all()
     serializer_class = GoodsSerializer
     pagination_class = GoodsPagination
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    filter_class=GoodsFilter
-    search_fields = ('name', 'goods_brief', 'goods_desc')
-    ordering_fields = ('sold_num', 'shop_price')
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
